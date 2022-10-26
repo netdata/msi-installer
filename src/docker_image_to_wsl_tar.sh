@@ -1,5 +1,4 @@
-cat << EOF >> /etc/netdata/netdata.conf
-
+cat << EOF | docker run -i --name netdatatemporary --entrypoint /bin/bash netdata/netdata -c 'cat >> /etc/netdata/netdata.conf'
 [plugins]
 	timex = no
 	checks = no
@@ -20,5 +19,6 @@ cat << EOF >> /etc/netdata/netdata.conf
 	apps = no
 	ebpf = no
 	charts.d = no
-
 EOF
+docker export netdatatemporary > netdata.tar
+docker rm netdatatemporary

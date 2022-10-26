@@ -1,17 +1,22 @@
 # msi-installer
-Netdata installer for Windows using WSL2
+Netdata installer for Windows using WSL
 
 MSI file is self-contained, run it to unattendedly setup the Netdata agent, if WSL not installed will install it and reboot, after restart run MSI again manually.
 
-Installer will register the WSL distro, modify the configuration files for windows_exporter, start the agent and add a startup item for it.
+Installer will register the WSL distro, start the agent and add a startup item for the current user.
 
-Optionally, agent can be added to cloud adding a TOKEN argument to the MSI launch command:
+Agent can be added to cloud adding the optional TOKEN, ROOMS and URL arguments to the MSI launch command:
 
-msiexec.exe /i netdatawsl.msi TOKEN=*token*
+msiexec.exe /i "NetdataWSL Windows Installer.msi" TOKEN=*token* ROOMS=*room" URL=https://api.netdata.cloud 
 
+To disable telemetry add the binary argument TELEMETRY=0:
+
+msiexec.exe /i "NetdataWSL Windows Installer.msi" TELEMETRY=0
+
+# build
 WXS file will build the MSI file through the WiX toolset.
 
-docker-to-tar.sh will generate the netdata.tar file containing the WSL distro using the public Netdata/netdata Docker image and used by WiX.
+docker_image_to_wsl_tar will generate the netdata.tar file containing the WSL distro using the public Netdata/netdata Docker image and used by WiX.
 
 The windows_exporter MSI file is not included and must be installed before as its installation can't be embedded into another MSI file per Windows Installer limitations.
 
@@ -25,16 +30,7 @@ Uninstallation from Control Panel removes the WSL distro including netdata confi
 ```
 wsl -d Netdata cp -a /mnt/c/Users/Public/custom-netdata-config-file-directory/ /etc/netdata
 ```
-3. Restart netdata (pending on https://github.com/netdata/msi-installer/issues/5)
-
-
-## Common installation parameters
-
-`--disable-telemetry`:  Not supported. Run instead `wsl -d Netdata touch /etc/netdata/.opt-out-from-anonymous-statistics`
-
-`--disable-cloud`: Not supported. Create instead a file under `/var/lib/netdata/cloud.d/cloud.conf` containing:
+3. Restart netdata
 ```
-[global]
-  enabled = no
+wsl -t netdata & wsl -d netdata netdata
 ```
-

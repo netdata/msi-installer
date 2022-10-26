@@ -1,1 +1,0 @@
-@wsl -d Netdata netdata
