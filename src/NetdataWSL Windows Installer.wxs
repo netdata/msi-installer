@@ -33,7 +33,7 @@
         <UI />
         <Property Id="TOKEN">0</Property>
         <Property Id="ROOMS">0</Property>
-        <Property Id="URL">https://api.netdata.cloud</Property>
+        <Property Id="URL">https://app.netdata.cloud</Property>
         <Property Id="TELEMETRY">1</Property>
         <CustomAction Id="RunStartScript0" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile -File MSIhelper1.ps1" Execute="deferred" Return="check" Impersonate="no" />
         <CustomAction Id="RunStartScript1" Directory="NETDATA" ExeCommand="powershell.exe -c &quot;Remove-NetFirewallRule -DisplayName netdata&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
