@@ -7,7 +7,7 @@ Installer will register the WSL distro, start the agent and add a startup item f
 
 Agent can be added to cloud adding the optional TOKEN, ROOMS and URL arguments to the MSI launch command:
 
-msiexec.exe /i "NetdataWSL Windows Installer.msi" TOKEN=*token* ROOMS=*room" URL=https://api.netdata.cloud 
+msiexec.exe /i "NetdataWSL Windows Installer.msi" TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud 
 
 To disable telemetry add the binary argument TELEMETRY=0:
 
