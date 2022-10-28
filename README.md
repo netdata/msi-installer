@@ -1,17 +1,28 @@
-# msi-installer
+# Netdata MSI Installer
+
 Netdata installer for Windows using WSL
 
-MSI file is self-contained, run it to unattendedly setup the Netdata agent, if WSL not installed will install it and reboot, after restart run MSI again manually.
+## Prerequisites
+
+Install the Prometheus WMI windows_exporter, by following the instructions [here](https://learn.netdata.cloud/docs/agent/collectors/go.d.plugin/modules/wmi#requirements)
+
+## Instructions
+
+Download the msi here. TODO ADD PROPER LINK WHEN MSI IS RENAMED 
+
+The MSI file is self-contained. Run it to unattendedly setup the Netdata agent. 
+
+If WSL is not installed, the installer will add it and reboot the server. After restart, run the MSI again manually.
 
 Installer will register the WSL distro, start the agent and add a startup item for the current user.
 
-Agent can be added to cloud adding the optional TOKEN, ROOMS and URL arguments to the MSI launch command:
+Agent can be added to Netdata Cloud by copy/pasting the add node command from your space. e.g.:
 
-msiexec.exe /i "NetdataWSL Windows Installer.msi" TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud 
+msiexec.exe /i netdata.msi TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud 
 
 To disable telemetry add the binary argument TELEMETRY=0:
 
-msiexec.exe /i "NetdataWSL Windows Installer.msi" TELEMETRY=0
+msiexec.exe /i "netdata.msi" TELEMETRY=0
 
 # build
 WXS file will build the MSI file through the WiX toolset.
