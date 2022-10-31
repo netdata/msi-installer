@@ -47,11 +47,12 @@ wsl -d netdata netdatacli shutdown-agent & wsl -d netdata netdata
 ```
 
 ## Start/Stop Netdata
+
 1. Start netdata
 ```
 wsl -d netdata netdata
 ```
 2. Stop netdata
 ```
-wsl -d netdata netdatacli shutdown-agent
+wsl -d netdata killall netdata
 ```
