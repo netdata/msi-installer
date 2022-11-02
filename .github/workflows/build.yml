@@ -51,7 +51,7 @@ jobs:
   build-msi:
     name: Build MSI
     needs:
-     - prepare-tarball
+      - prepare-tarball
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -69,7 +69,12 @@ jobs:
       - name: Build MSI
         id: build
         working-directory: src
-        run: Invoke-Item .\build_msi_with_wix_toolset.cmd
+        shell: cmd
+        run: |
+          "C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" -nologo .\netdata.wxs -v -out .\netdata.wixobj
+          "C:\Program Files (x86)\WiX Toolset v3.11\bin\light.exe" .\netdata.wixobj -spdb -v -out .\netdata.msi
+          del .\netdata.wixobj
+          dir .\
       - name: Upload MSI
         id: upload
         uses: actions/upload-artifact@v3
@@ -100,7 +105,8 @@ jobs:
         run: docker pull "netdata/netdata:${{ needs.get-docker-tag.outputs.tag }}"
       - name: Get Version
         id: get-version
-        run: echo "version=$(podman run -it --rm --entrypoint /usr/sbin/netdata netdata/netdata -V 2>/dev/null | cut -f 2 -d ' ')" >> "${GITHUB_OUTPUT}"
+        run: |
+          echo "version=$(podman run -it --rm --entrypoint /usr/sbin/netdata netdata/netdata -V 2>/dev/null | cut -f 2 -d ' ')" >> "${GITHUB_OUTPUT}"
   release:
     name: Create Release
     if: github.event_name == 'workflow_dispatch'
