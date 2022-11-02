@@ -1,16 +1,26 @@
-echo Stopping temporary container if running...
-docker stop netdatatmp
+#!/bin/sh
 
-echo Deleting temporary container if exists...
-docker rm netdatatmp
+set -e
 
-echo Pulling latest netdata docker image...
-docker pull netdata/netdata:latest
+if [ -z "${1}" ]; then
+    tag="latest"
+else
+    tag="${1}"
+fi
 
-echo Running temporary container...
-docker run -d --name netdatatmp --entrypoint tail netdata/netdata -f /dev/null
+echo "Stopping temporary container if running..."
+docker stop netdatatmp || true
 
-echo Modifying netdata.conf...
+echo "Deleting temporary container if exists..."
+docker rm netdatatmp || true
+
+echo "Pulling latest netdata docker image..."
+docker pull "netdata/netdata:${tag}"
+
+echo "Running temporary container..."
+docker run -d --name netdatatmp --entrypoint tail "netdata/netdata:${tag}" -f /dev/null
+
+echo "Modifying netdata.conf..."
 cat << EOF | docker exec -i netdatatmp bash -c 'cat >> /etc/netdata/netdata.conf'
 [plugins]
 	timex = no
@@ -34,14 +44,14 @@ cat << EOF | docker exec -i netdatatmp bash -c 'cat >> /etc/netdata/netdata.conf
 	charts.d = no
 EOF
 
-echo Fixing log files...
+echo "Fixing log files..."
 docker exec netdatatmp bash -c "rm -f /var/log/netdata/*"
 
-echo Exporting tar file...
+echo "Exporting tar file..."
 docker export netdatatmp > netdata.tar
 
-echo Stopping temporary container...
+echo "Stopping temporary container..."
 docker stop netdatatmp
 
-echo Deleting temporary container...
+echo "Deleting temporary container..."
 docker rm netdatatmp
