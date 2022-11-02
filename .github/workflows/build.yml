@@ -25,10 +25,10 @@ jobs:
       - name: Prepare Docker Tag
         id: prepare
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "::set-output name=tag::${{ github.event.inputs.tag }}"
+          if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> "${GITHUB_OUTPUT}"
           else
-            echo "::set-output name=tag::latest"
+            echo "tag=latest" >> "${GITHUB_OUTPUT}"
           fi
   prepare-tarball:
     name: Prepare Tarball
@@ -78,17 +78,17 @@ jobs:
           path: src/netdata.msi
   prepare-release-tag:
     name: Prepare Release Tag
-    if: ${{ github.event_name }} = "workflow_dispatch"
+    if: github.event_name == 'workflow_dispatch'
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
     runs-on: ubuntu-latest
     steps:
       - name: Create Release Tag
         id: tag
-        run: echo "::set-output name=tag::$(date +%F_%T | tr -d ':-_')"
+        run: echo "tag=$(date +%F_%T | tr -d ':-_')" >> "${GITHUB_OUTPUT}"
   get-netdata-version:
     name: Get Netdata Version
-    if: ${{ github.event_name }} = "workflow_dispatch"
+    if: github.event_name == 'workflow_dispatch'
     outputs:
       version: ${{ steps.get-version.outputs.version }}
     needs:
@@ -100,10 +100,10 @@ jobs:
         run: docker pull "netdata/netdata:${{ needs.get-docker-tag.outputs.tag }}"
       - name: Get Version
         id: get-version
-        run: echo "::set-output name=version::$(podman run -it --rm --entrypoint /usr/sbin/netdata netdata/netdata -V 2>/dev/null | cut -f 2 -d ' ')"
+        run: echo "version=$(podman run -it --rm --entrypoint /usr/sbin/netdata netdata/netdata -V 2>/dev/null | cut -f 2 -d ' ')" >> "${GITHUB_OUTPUT}"
   release:
     name: Create Release
-    if: ${{ github.event_name }} = "workflow_dispatch"
+    if: github.event_name == 'workflow_dispatch'
     needs:
       - build-msi
       - prepare-release-tag
