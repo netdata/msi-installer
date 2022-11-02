@@ -69,7 +69,7 @@ jobs:
       - name: Build MSI
         id: build
         working-directory: src
-        run: build_msi_with_wix_toolset.cmd
+        run: Invoke-Item .\build_msi_with_wix_toolset.cmd
       - name: Upload MSI
         id: upload
         uses: actions/upload-artifact@v3
