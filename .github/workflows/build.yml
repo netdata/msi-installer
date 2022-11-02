@@ -116,6 +116,9 @@ jobs:
       - get-netdata-version
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
       - name: Fetch MSI
         id: fetch
         uses: actions/download-artifact@v3
@@ -129,6 +132,6 @@ jobs:
           artifactErrorsFailBuild: true
           artifacts: 'netdata.msi'
           body: With Netdata ${{ needs.get-netdata-version.outputs.version }}.
-          commit: HEAD
+          commit: master
           tag: ${{ needs.prepare-release-tag.outputs.tag }}
           token: ${{ secrets.NETDATABOT_GITHUB_TOKEN }}
