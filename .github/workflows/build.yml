@@ -1,0 +1,128 @@
+---
+# Build the MSI installer.
+name: Build
+on:
+  push:
+    branches:
+      - master
+  pull_request: null
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Docker tag to use as base
+        default: latest
+        required: true
+concurrency:
+  group: build-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+jobs:
+  get-docker-tag:
+    name: Get Docker Tag
+    outputs:
+      tag: ${{ steps.prepare.outputs.tag }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare Docker Tag
+        id: prepare
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "::set-output name=tag::${{ github.event.inputs.tag }}"
+          else
+            echo "::set-output name=tag::latest"
+          fi
+  prepare-tarball:
+    name: Prepare Tarball
+    needs:
+      - get-docker-tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+      - name: Generate Tarball
+        id: generate
+        run: src/docker_image_to_wsl_tar.sh "${{ needs.get-docker-tag.outputs.tag }}"
+      - name: Store Tarball
+        id: store
+        uses: actions/upload-artifact@v3
+        with:
+          name: netdata-tarball
+          path: netdata.tar
+  build-msi:
+    name: Build MSI
+    needs:
+     - prepare-tarball
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+      - name: Prepare Tools
+        id: prepare
+        run: choco install wixtoolset
+      - name: Fetch Tarball
+        id: fetch
+        uses: actions/download-artifact@v3
+        with:
+          name: netdata-tarball
+          path: src/
+      - name: Build MSI
+        id: build
+        working-directory: src
+        run: build_msi_with_wix_toolset.cmd
+      - name: Upload MSI
+        id: upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: netdata-msi
+          path: src/netdata.msi
+  prepare-release-tag:
+    name: Prepare Release Tag
+    if: ${{ github.event_name }} = "workflow_dispatch"
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release Tag
+        id: tag
+        run: echo "::set-output name=tag::$(date +%F_%T | tr -d ':-_')"
+  get-netdata-version:
+    name: Get Netdata Version
+    if: ${{ github.event_name }} = "workflow_dispatch"
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    needs:
+      - get-docker-tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Image
+        id: fetch
+        run: docker pull "netdata/netdata:${{ needs.get-docker-tag.outputs.tag }}"
+      - name: Get Version
+        id: get-version
+        run: echo "::set-output name=version::$(podman run -it --rm --entrypoint /usr/sbin/netdata netdata/netdata -V 2>/dev/null | cut -f 2 -d ' ')"
+  release:
+    name: Create Release
+    if: ${{ github.event_name }} = "workflow_dispatch"
+    needs:
+      - build-msi
+      - prepare-release-tag
+      - get-netdata-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch MSI
+        id: fetch
+        uses: actions/download-artifact@v3
+        with:
+          name: netdata-msi
+      - name: Create Release
+        id: release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: false
+          artifactErrorsFailBuild: true
+          artifacts: 'netdata.msi'
+          body: With Netdata ${{ needs.get-netdata-version.outputs.version }}.
+          commit: HEAD
+          tag: ${{ needs.prepare-release-tag.outputs.tag }}
+          token: ${{ secrets.NETDATABOT_GITHUB_TOKEN }}
