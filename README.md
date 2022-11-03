@@ -15,7 +15,7 @@ The MSI installer includes and installs automatically the following dependencies
 
 If WSL2 can't be installed, WSL1 will be installed instead. 
 
-If this is the first WSL installation on your Windows machine **the installer will reboot the server**. After restart, run the MSI again manually.
+**The installer will reboot the server** in order to install all the dependencies. After restart, the installation will finish automatically.
   
 ## Installation Details
 
@@ -25,11 +25,13 @@ The installer will register the WSL distribution called "Netdata", start the age
 
 The agent can be added to Netdata Cloud by copy/pasting the add node command from your space. e.g.:
 
-msiexec.exe /i netdata.msi TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud 
+```msiexec.exe /i netdata.msi TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud```
 
 To disable telemetry add the binary argument TELEMETRY=0:
 
-msiexec.exe /i "netdata.msi" TELEMETRY=0
+```msiexec.exe /i "netdata.msi" TELEMETRY=0```
+
+The installation log can be found at `C:\NETDATA.LOG`
 
 ## Netdata configuration
 
