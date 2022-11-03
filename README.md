@@ -5,11 +5,18 @@ Netdata installer for Windows using WSL
 ## Instructions
 
 On your Windows machine:
-- Install the latest [Prometheus exporter for Windows](https://github.com/prometheus-community/windows_exporter/releases).
-- Download the [netdata.msi](https://github.com/netdata/msi-installer/releases)
-- Run netdata.msi directly, or with the options provided by Netdata Cloud. It will install WSL2 or WSL1 and run Netdata on your machine. 
-  **If WSL is not installed, the installer will add it and reboot the server**. After restart, run the MSI again manually.
 
+- Download the [netdata.msi](https://github.com/netdata/msi-installer/releases)
+- Run netdata.msi directly, or with the options provided by Netdata Cloud. 
+
+The MSI installer includes and installs automatically the following dependencies:
+- [Prometheus exporter for Windows](https://github.com/prometheus-community/windows_exporter/releases).
+- [WSL2 Linux kernel update package for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi)
+
+If WSL2 can't be installed, WSL1 will be installed instead. 
+
+If this is the first WSL installation on your Windows machine **the installer will reboot the server**. After restart, run the MSI again manually.
+  
 ## Installation Details
 
 The MSI file is self-contained. Run it to unattendedly setup the Netdata agent. 
@@ -50,6 +57,7 @@ start-netdata
 ```
 stop-netdata
 ```
+
 3. Restart netdata
 ```
 restart-netdata
@@ -59,9 +67,10 @@ restart-netdata
 
 Uninstallation from  the Control Panel (Add or remove programs) removes the WSL distro, including the netdata configuration files. The name of the program is "NetdataWSL".
 
-# build
-WXS file will build the MSI file through the WiX toolset.
+## Build
 
-docker_image_to_wsl_tar will generate the netdata.tar file containing the WSL distro using the public Netdata/netdata Docker image and used by WiX.
+The WXS file will build the MSI file through the WiX toolset.
+
+`docker_image_to_wsl_tar` will generate the netdata.tar file containing the WSL distro using the public Netdata/netdata Docker image and used by WiX.
 
 
