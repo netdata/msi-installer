@@ -4,11 +4,15 @@ Netdata installer for Windows using WSL
 
 ## Instructions
 
-Download the msi here. TODO ADD PROPER LINK WHEN MSI IS RENAMED 
+On your Windows machine:
+- Download the [netdata.msi](https://github.com/netdata/msi-installer/releases)
+- Run netdata.msi directly, or with the options provided by Netdata Cloud. It will install WSL2 or WSL1 and run Netdata on your machine.
+
+## Details
 
 The MSI file is self-contained. Run it to unattendedly setup the Netdata agent. 
 
-If WSL is not installed, the installer will add it. The installer will restart and after logon installation will resume.
+If WSL is not installed, the installer will add it. The installer will restart and after logon installation will resume automatically.
 
 Installer will register the WSL distro, start the agent and add a startup item for the current user.
 
@@ -24,6 +28,10 @@ msiexec.exe /i "netdata.msi" TELEMETRY=0
 WXS file will build the MSI file through the WiX toolset.
 
 docker_image_to_wsl_tar will generate the netdata.tar file containing the WSL distro using the public Netdata/netdata Docker image and used by WiX.
+
+The MSI installer includes and installs automatically the following dependencies:
+- [Prometheus exporter for Windows](https://github.com/prometheus-community/windows_exporter/releases).
+- [WSL2 Linux kernel update package for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi)
 
 If agent doesn't show WMI metrics a restart is necessary.
 
