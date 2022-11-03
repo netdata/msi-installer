@@ -2,13 +2,14 @@
 
 Netdata installer for Windows using WSL
 
-## Prerequisites
-
-Install the Prometheus WMI windows_exporter, by following the instructions [here](https://learn.netdata.cloud/docs/agent/collectors/go.d.plugin/modules/wmi#requirements)
-
 ## Instructions
 
-Download the msi here. TODO ADD PROPER LINK WHEN MSI IS RENAMED 
+On your Windows machine:
+- Install the latest [Prometheus exporter for Windows](https://github.com/prometheus-community/windows_exporter/releases).
+- Download the [netdata.msi](https://github.com/netdata/msi-installer/releases)
+- Run netdata.msi directly, or with the options provided by Netdata Cloud. It will install WSL2 or WSL1 and run Netdata on your machine.
+
+## Details
 
 The MSI file is self-contained. Run it to unattendedly setup the Netdata agent. 
 
