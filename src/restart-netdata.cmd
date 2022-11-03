@@ -1,0 +1,1 @@
+@wsl -d netdata kilall netdata & wsl -d netdata netdata

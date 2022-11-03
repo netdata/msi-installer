@@ -1,0 +1,1 @@
+@msiexec.exe /passive /i wsl_update_x64.msi

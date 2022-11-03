@@ -4,7 +4,7 @@
     # arguments for the WiX Toolset are stored here.
 
     candleArgs: 
-    lightArgs: "<projectname>.wixobj" -spdb -out "../<projectname>.msi" <extensions>
+    lightArgs: "<projectname>.wixobj" -spdb -out "d:\<projectname>.msi" <extensions>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="DE35032B-37F6-4AEC-AADD-B780E0638099" Name="NetdataWSL" Language="1033" Version="0.0.0.1" Manufacturer="Netdata" UpgradeCode="88BEA154-5510-4F79-9282-C3CE10760E2C">
@@ -13,82 +13,66 @@
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
                 <Directory Id="NETDATA" Name="Netdata">
-                    <Component Id="MSIHELPER1.PS1" DiskId="1" Guid="96FD730D-AFA7-4C50-8433-00A986589061">
-                        <File Id="MSIHELPER1.PS1" Name="MSIhelper1.ps1" Source="MSIhelper1.ps1" />
+                    <Component Id="INSTALL_WINDOWS_EXPORTER.CMD" DiskId="1" Guid="F211AC68-CE11-4088-9102-9DF5F39EFC2E">
+                        <File Id="INSTALL_WINDOWS_EXPORTER.CMD" Name="install_windows_exporter.cmd" Source="install_windows_exporter.cmd" />
                     </Component>
-                    <Component Id="MSIHELPER2.CMD" DiskId="1" Guid="C51885C6-C2B3-4B00-94AB-14992AB0F59D">
-                        <File Id="MSIHELPER2.CMD" Name="MSIhelper2.cmd" Source="MSIhelper2.cmd" />
+                    <Component Id="NETDATA.PS1" DiskId="1" Guid="AE0AB842-317C-422D-A112-609C8711B483">
+                        <File Id="NETDATA.PS1" Name="netdata.ps1" Source="netdata.ps1" />
                     </Component>
-                    <Component Id="NETDATA.TAR" DiskId="1" Guid="F31E43CB-3844-4E6C-95EE-0DB7ACDB810A">
+                    <Component Id="NETDATA.TAR" DiskId="1" Guid="CA158CA6-71CD-4526-B89C-9EDB9E559805">
                         <File Id="NETDATA.TAR" Name="netdata.tar" Source="netdata.tar" />
+                    </Component>
+                    <Component Id="NETDATA_TASK.XML" DiskId="1" Guid="C3869C32-4830-4D25-8600-AA5DCCA5C1F1">
+                        <File Id="NETDATA_TASK.XML" Name="netdata-task.xml" Source="netdata-task.xml" />
+                    </Component>
+                    <Component Id="RESTART_NETDATA.CMD" DiskId="1" Guid="F950AD68-0D2E-4F5F-9E3D-26A033C60698">
+                        <File Id="RESTART_NETDATA.CMD" Name="restart-netdata.cmd" Source="restart-netdata.cmd" />
+                    </Component>
+                    <Component Id="START_NETDATA.CMD" DiskId="1" Guid="E3551668-EB52-4594-B260-D0DA489E6E69">
+                        <File Id="START_NETDATA.CMD" Name="start-netdata.cmd" Source="start-netdata.cmd" />
+                    </Component>
+                    <Component Id="STOP_NETDATA.CMD" DiskId="1" Guid="CE673BA6-A88B-4A83-9C8A-3C804B6DE1FB">
+                        <File Id="STOP_NETDATA.CMD" Name="stop-netdata.cmd" Source="stop-netdata.cmd" />
+                    </Component>
+                    <Component Id="UNINSTALL_NETDATA.CMD" DiskId="1" Guid="2DE8F117-2AA8-4DF1-BB45-44B24A6D594B">
+                        <File Id="UNINSTALL_NETDATA.CMD" Name="uninstall-netdata.cmd" Source="uninstall-netdata.cmd" />
+                    </Component>
+                    <Component Id="UPDATE_WSL2_KERNEL.CMD" DiskId="1" Guid="EB0A7676-D438-4BEA-B255-439544D38EF9">
+                        <File Id="UPDATE_WSL2_KERNEL.CMD" Name="update_wsl2_kernel.cmd" Source="update_wsl2_kernel.cmd" />
+                    </Component>
+                    <Component Id="WINDOWS_EXPORTER.MSI" DiskId="1" Guid="2A5F1468-792B-464C-883D-632B73E44E65">
+                        <File Id="WINDOWS_EXPORTER.MSI" Name="windows_exporter.msi" Source="windows_exporter.msi" />
+                    </Component>
+                    <Component Id="WSL_UPDATE_X64.MSI" DiskId="1" Guid="10FCA6F3-D847-477A-8C8E-2A5A087BA17F">
+                        <File Id="WSL_UPDATE_X64.MSI" Name="wsl_update_x64.msi" Source="wsl_update_x64.msi" />
                     </Component>
                 </Directory>
             </Directory>
         </Directory>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
-            <ComponentRef Id="MSIHELPER1.PS1" />
-            <ComponentRef Id="MSIHELPER2.CMD" />
+            <ComponentRef Id="INSTALL_WINDOWS_EXPORTER.CMD" />
+            <ComponentRef Id="NETDATA.PS1" />
             <ComponentRef Id="NETDATA.TAR" />
+            <ComponentRef Id="NETDATA_TASK.XML" />
+            <ComponentRef Id="RESTART_NETDATA.CMD" />
+            <ComponentRef Id="START_NETDATA.CMD" />
+            <ComponentRef Id="STOP_NETDATA.CMD" />
+            <ComponentRef Id="UNINSTALL_NETDATA.CMD" />
+            <ComponentRef Id="UPDATE_WSL2_KERNEL.CMD" />
+            <ComponentRef Id="WINDOWS_EXPORTER.MSI" />
+            <ComponentRef Id="WSL_UPDATE_X64.MSI" />
         </Feature>
         <UI />
         <Property Id="TOKEN">0</Property>
         <Property Id="ROOMS">0</Property>
-        <Property Id="URL">https://api.netdata.cloud</Property>
+        <Property Id="URL">https://app.netdata.cloud</Property>
         <Property Id="TELEMETRY">1</Property>
-        <CustomAction Id="RunStartScript0" Directory="NETDATA" ExeCommand=
-            "powershell.exe -ExecutionPolicy Bypass -NoProfile -File MSIhelper1.ps1"
-            Execute="deferred" Return="check" Impersonate="no" />
-        <!-- Remove rirewall rule -->
-        <CustomAction Id="RunStartScript1" Directory="NETDATA" ExeCommand=
-            "powershell.exe -c &quot;Remove-NetFirewallRule -DisplayName netdata&quot;"
-            Execute="deferred" Return="ignore" Impersonate="no" />
-        <!-- Add Firewall rule -->
-        <CustomAction Id="RunStartScript2" Directory="NETDATA" ExeCommand=
-            "powershell.exe -c &quot;New-NetFirewallRule -Program C:\NetdataWSL\rootfs\usr\sbin\netdata -Action Allow -Profile Domain,Private,Public -DisplayName netdata -Description netdata -Direction Inbound&quot;"
-            Execute="deferred" Return="ignore" Impersonate="no" />
-        <!-- Removing old distro if exists -->
-        <CustomAction Id="RunStartScript3" Directory="NETDATA" ExeCommand=
-            "cmd.exe /c wsl --unregister netdata"
-            Execute="deferred" Return="ignore" Impersonate="yes" />
-        <!-- Registering Netdata WSL distro -->
-        <CustomAction Id="RunStartScript4" Directory="NETDATA" ExeCommand=
-            "cmd.exe /c wsl --import Netdata C:\NetdataWSL Netdata.tar"
-            Execute="deferred" Return="ignore" Impersonate="yes" />
-        <!-- Changing to WSL1 for compatibility with Windows Server -->
-        <CustomAction Id="RunStartScript5" Directory="NETDATA" ExeCommand=
-            "cmd.exe /c wsl --set-version netdata 1"
-            Execute="deferred" Return="ignore" Impersonate="yes" />
-        <!-- Starting Netdata agent -->
-        <CustomAction Id="RunStartScript6" Directory="NETDATA" ExeCommand=
-            "cmd.exe /c wsl -d Netdata netdata"
-            Execute="deferred" Return="ignore" Impersonate="yes" />
-        <!-- Run helper cmd script for tentative claiming and telemetry setup -->
-        <CustomAction Id="RunStartScript7" Directory="NETDATA" ExeCommand=
-            "cmd.exe /c MSIhelper2.cmd [TOKEN] [ROOMS] [URL] [TELEMETRY]"
-            Execute="deferred" Return="ignore" Impersonate="yes" />
-        <!-- Add netdata agent command to start-up -->
-        <CustomAction Id="RunStartScript8" Directory="NETDATA" ExeCommand=
-            "powershell.exe -c &quot;New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Netdata -Value 'wsl.exe -d Netdata netdata'&quot;"
-            Execute="deferred" Return="ignore" Impersonate="yes" />
-        <!-- Remove leftover installation helper scripts -->
-        <CustomAction Id="RunStartScript9" Directory="NETDATA" ExeCommand=
-            "cmd.exe /c &quot;del netdata.tar &amp; del MSIhelper1.ps1 &amp; del MSIhelper2.cmd&quot;"
-            Execute="deferred" Return="ignore" Impersonate="no" />
-        <!-- Unregister Netdata WSL distro at uninstall time -->
+        <CustomAction Id="RunStartScript" Directory="NETDATA" ExeCommand=
+            "powershell.exe -ExecutionPolicy Bypass -NoProfile -File netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY]" Execute="deferred" Return="check" Impersonate="no" />
         <CustomAction Id="RunUninstScript" Directory="NETDATA" ExeCommand=
-            "cmd.exe /c wsl --unregister netdata"
-            Execute="deferred" Return="ignore" Impersonate="yes" />
+            "cmd.exe /c uninstall-netdata.cmd" Execute="deferred" Return="ignore" Impersonate="yes" />
         <InstallExecuteSequence>
-            <Custom Action="RunStartScript0" Before="InstallFinalize">NOT Installed</Custom>
-            <Custom Action="RunStartScript1" After="RunStartScript0">NOT Installed</Custom>
-            <Custom Action="RunStartScript2" After="RunStartScript1">NOT Installed</Custom>
-            <Custom Action="RunStartScript3" After="RunStartScript2">NOT Installed</Custom>
-            <Custom Action="RunStartScript4" After="RunStartScript3">NOT Installed</Custom>
-            <Custom Action="RunStartScript5" After="RunStartScript4">NOT Installed</Custom>
-            <Custom Action="RunStartScript6" After="RunStartScript5">NOT Installed</Custom>
-            <Custom Action="RunStartScript7" After="RunStartScript6">NOT Installed</Custom>
-            <Custom Action="RunStartScript8" After="RunStartScript7">NOT Installed</Custom>
-            <Custom Action="RunStartScript9" After="RunStartScript8">NOT Installed</Custom>
+            <Custom Action="RunStartScript" Before="InstallFinalize">NOT Installed</Custom>
             <Custom Action="RunUninstScript" After="InstallInitialize">Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
         </InstallExecuteSequence>
     </Product>
