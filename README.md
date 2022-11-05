@@ -7,13 +7,14 @@ Netdata installer for Windows using WSL
 On your Windows machine:
 
 - Download the [netdata.msi](https://github.com/netdata/msi-installer/releases)
+- Open an admin terminal and run `msiexec -i C:\PATH-TO-MSI\netdata.msi` **(running directly the MSI will cause installation to fail)**.
 - Run netdata.msi directly, or with the options provided by Netdata Cloud. 
 
 The MSI installer includes and installs automatically the following dependencies:
 - [Prometheus exporter for Windows](https://github.com/prometheus-community/windows_exporter/releases).
 - [WSL2 Linux kernel update package for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi)
 
-If WSL2 can't be installed, WSL1 will be installed instead. 
+If WSL2 can't be used, WSL1 will be used instead. 
 
 **The installer will reboot the server** in order to install all the dependencies. After restart, the installation will finish automatically.
   
@@ -25,11 +26,11 @@ The installer will register the WSL distribution called "Netdata", start the age
 
 The agent can be added to Netdata Cloud by copy/pasting the add node command from your space. e.g.:
 
-```msiexec.exe /i netdata.msi TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud```
+```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud```
 
 To disable telemetry add the binary argument TELEMETRY=0:
 
-```msiexec.exe /i "netdata.msi" TELEMETRY=0```
+```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi TELEMETRY=0```
 
 The installation log can be found at `C:\NETDATA.LOG`
 

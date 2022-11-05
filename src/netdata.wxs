@@ -34,9 +34,6 @@
                     <Component Id="STOP_NETDATA.CMD" DiskId="1" Guid="CE673BA6-A88B-4A83-9C8A-3C804B6DE1FB">
                         <File Id="STOP_NETDATA.CMD" Name="stop-netdata.cmd" Source="stop-netdata.cmd" />
                     </Component>
-                    <Component Id="UNINSTALL_NETDATA.CMD" DiskId="1" Guid="2DE8F117-2AA8-4DF1-BB45-44B24A6D594B">
-                        <File Id="UNINSTALL_NETDATA.CMD" Name="uninstall-netdata.cmd" Source="uninstall-netdata.cmd" />
-                    </Component>
                     <Component Id="UPDATE_WSL2_KERNEL.CMD" DiskId="1" Guid="EB0A7676-D438-4BEA-B255-439544D38EF9">
                         <File Id="UPDATE_WSL2_KERNEL.CMD" Name="update_wsl2_kernel.cmd" Source="update_wsl2_kernel.cmd" />
                     </Component>
@@ -45,6 +42,15 @@
                     </Component>
                     <Component Id="WSL_UPDATE_X64.MSI" DiskId="1" Guid="10FCA6F3-D847-477A-8C8E-2A5A087BA17F">
                         <File Id="WSL_UPDATE_X64.MSI" Name="wsl_update_x64.msi" Source="wsl_update_x64.msi" />
+                    </Component>
+                    <Component Id="UNINSTALL_NETDATA.PS1" DiskId="1" Guid="0D955728-0DBF-4330-9EE7-E604BFA7DE20">
+                        <File Id="UNINSTALL_NETDATA.PS1" Name="uninstall-netdata.ps1" Source="uninstall-netdata.ps1" />
+                    </Component>
+                    <Component Id="REMOVE_STARTUP.CMD" DiskId="1" Guid="717F56D2-45AA-491C-A479-9998D9D0D7EC">
+                        <File Id="REMOVE_STARTUP.CMD" Name="remove-startup.cmd" Source="remove-startup.cmd" />
+                    </Component>
+                    <Component Id="UNREGISTER_NETDATA.CMD" DiskId="1" Guid="DAA43FF4-3D9B-49A4-864E-B84DB9E369AC">
+                        <File Id="UNREGISTER_NETDATA.CMD" Name="unregister-netdata.cmd" Source="unregister-netdata.cmd" />
                     </Component>
                 </Directory>
             </Directory>
@@ -57,10 +63,12 @@
             <ComponentRef Id="RESTART_NETDATA.CMD" />
             <ComponentRef Id="START_NETDATA.CMD" />
             <ComponentRef Id="STOP_NETDATA.CMD" />
-            <ComponentRef Id="UNINSTALL_NETDATA.CMD" />
             <ComponentRef Id="UPDATE_WSL2_KERNEL.CMD" />
             <ComponentRef Id="WINDOWS_EXPORTER.MSI" />
             <ComponentRef Id="WSL_UPDATE_X64.MSI" />
+            <ComponentRef Id="UNINSTALL_NETDATA.PS1" />
+            <ComponentRef Id="REMOVE_STARTUP.CMD" />
+            <ComponentRef Id="UNREGISTER_NETDATA.CMD" />
         </Feature>
         <UI />
         <Property Id="TOKEN">0</Property>
@@ -68,7 +76,7 @@
         <Property Id="URL">https://app.netdata.cloud</Property>
         <Property Id="TELEMETRY">1</Property>
         <CustomAction Id="RunStartScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
-        <CustomAction Id="RunUninstScript" Directory="NETDATA" ExeCommand="cmd.exe /c uninstall-netdata.cmd" Execute="deferred" Return="ignore" Impersonate="yes" />
+        <CustomAction Id="RunUninstScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <InstallExecuteSequence>
             <Custom Action="RunStartScript" Before="InstallFinalize">NOT Installed</Custom>
             <Custom Action="RunUninstScript" After="InstallInitialize">Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
