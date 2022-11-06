@@ -11,6 +11,8 @@ if (-Not $LASTEXITCODE) {
 }
 Write-Output "REMOVING INSTALLED FLAG FILE"
 Remove-Item installed
+Write-Output "REMOVING VERSION FILE"
+Remove-Item version
 if (test-path restart) {
 	Write-Output "REMOVING RESTART FLAG FILE"
 	Remove-Item restart -ErrorAction SilentlyContinue

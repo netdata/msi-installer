@@ -82,18 +82,29 @@ if (-Not (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subs
 Write-Output "UNREGISTERING NETDATA WSL DISTRO"
 cmd.exe /c wsl --unregister netdata
 
-Write-Output "REGISTERING NETDATA WSL DISTRO"
-cmd.exe /c wsl --import Netdata C:\NetdataWSL Netdata.tar
+Write-Output "REGISTERING NETDATA DISTRO WITH WSL2"
+$version = 2
+cmd.exe /c wsl --import Netdata C:\NetdataWSL Netdata.tar --version $version
 if ($LASTEXITCODE) {
-	Write-Output "WSL DISTRO COULDN'T BE IMPORTED, TRYING WITH WSL VERSION 1"
-	cmd.exe /c wsl --import Netdata C:\NetdataWSL Netdata.tar --version 1
+	Write-Output "WSL DISTRO COULDN'T BE IMPORTED USING WSL2, TRYING WITH WSL1"
+	$version = 1
+	cmd.exe /c wsl --import Netdata C:\NetdataWSL Netdata.tar --version $version
+}
+if ($LASTEXITCODE) {
+	Write-Output "WSL DISTRO COULD NOT BE IMPORTED WITH EXPLICIT VERSION 1, TRYING DEFAULT OPTION"
+	cmd.exe /c wsl --import Netdata C:\NetdataWSL Netdata.tar
 }
 if ($LASTEXITCODE) {
 	Write-Output "WSL DISTRO COULD NOT BE IMPORTED, ABORTING"	
 	exit
 } else {
 	Write-Output "WSL DISTRO REGISTERED"
+	#saving wsl version used in version file
+	$version | Set-Content -Encoding ascii -NoNewLine .\version
 }
+
+# saving wsl version used in machine env var netdata_wsl_version
+cmd.exe /c setx /m NETDATA_WSL_VERSION $version
 
 Write-Output "ADDING SCRIPTS TO PATH"
 cmd.exe /c 'setx PATH "%PATH%;c:\program files (x86)\netdata"'
