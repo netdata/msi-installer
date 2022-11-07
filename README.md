@@ -6,19 +6,21 @@ Netdata installer for Windows using WSL
 
 On your Windows machine:
 
-- Download the [netdata.msi](https://github.com/netdata/msi-installer/releases)
-- Open an admin terminal and run `msiexec -i C:\PATH-TO-MSI\netdata.msi` **(running directly the MSI will cause installation to fail)**.
-- Run netdata.msi directly, or with the options provided by Netdata Cloud. 
+- Download the [latest netdata.msi](https://github.com/netdata/msi-installer/releases)
+- Open an **admin** terminal and run `msiexec -i [PATH TO MSI]\netdata.msi [OPTIONS]` 
+
+> :warning: **Running directly the MSI will cause installation to fail**. Only install via `msiexec`.
+
+> :warning: **The installer will reboot the server without asking you** in order to install all the dependencies. After restart, the installation will finish 
+automatically, but **a user needs to log in, after the reboot**, due to https://github.com/microsoft/WSL/issues/2979.
+
+
+## Installation Details
 
 The MSI installer includes and installs automatically the following dependencies:
 - [Prometheus exporter for Windows](https://github.com/prometheus-community/windows_exporter/releases).
-- [WSL2 Linux kernel update package for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi)
-
-If WSL2 can't be used, WSL1 will be used instead. 
-
-**The installer will reboot the server** in order to install all the dependencies. After restart, the installation will finish automatically.
-  
-## Installation Details
+- [WSL2 Linux kernel update package for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
+  If WSL2 can't be used, WSL1 will be used instead. 
 
 The MSI file is self-contained. Run it to unattendedly setup the Netdata agent. 
 
