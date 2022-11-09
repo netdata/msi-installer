@@ -1,6 +1,7 @@
 # Netdata MSI Installer
 
-Netdata installer for Windows using WSL
+Netdata installer for Windows using WSL. Use this installer to quickly explore how Netdata monitors Windows hosts. 
+For production use, you will need to set up [remote data collection](https://learn.netdata.cloud/docs/agent/collectors/go.d.plugin/modules/wmi#remote-data-collection) 
 
 ## Instructions
 
