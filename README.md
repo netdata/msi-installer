@@ -38,6 +38,14 @@ To disable telemetry add the binary argument TELEMETRY=0:
 
 The installation log can be found at `C:\NETDATA.LOG`
 
+To disable the automatic restart, use binary argument AUTORESTART=0:
+
+```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi AUTORESTART=0```
+
+To specify the WSL version to be used use integer argument WSL=1:
+
+```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi WSL=1```
+
 ## Netdata configuration
 
 For a single instance, you can bring up the linux prompt via `wsl -d Netdata`, then `cd /etc/netdata` and use `./edit-config`. 
