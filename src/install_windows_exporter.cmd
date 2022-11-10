@@ -1,1 +1,1 @@
-@msiexec.exe /i windows_exporter.msi ENABLED_COLLECTORS=cpu,memory,net,logical_disk,os,system,logon,thermalzone LISTEN_PORT=9182
+@msiexec.exe /i windows_exporter.msi ENABLED_COLLECTORS=cpu,memory,net,logical_disk,os,system,logon,thermalzone LISTEN_PORT=%1

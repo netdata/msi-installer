@@ -7,9 +7,9 @@
     lightArgs: "<projectname>.wixobj" -spdb -out "../<projectname>.msi" <extensions>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="DE35032B-37F6-4AEC-AADD-B780E0638099" Name="NetdataWSL" Language="1033" Version="0.0.0.1" Manufacturer="Netdata" UpgradeCode="88BEA154-5510-4F79-9282-C3CE10760E2C">
-        <Package Description="Netdata WSL agent" Comments="Simple test" InstallerVersion="200" Compressed="yes" />
-        <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
+    <Product Id="*" Name="Netdata" Language="1033" Version="0.0.0.1" Manufacturer="Netdata" UpgradeCode="88BEA154-5510-4F79-9282-C3CE10760E2C">    
+        <Package Description="Netdata WSL agent" InstallerVersion="200" Compressed="yes" />
+        <Media Id="1" Cabinet="netdata.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
                 <Directory Id="NETDATA" Name="Netdata">
@@ -75,11 +75,15 @@
         <Property Id="ROOMS">0</Property>
         <Property Id="URL">https://app.netdata.cloud</Property>
         <Property Id="TELEMETRY">1</Property>
-        <CustomAction Id="RunStartScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
+        <Property Id="AUTORESTART">1</Property>
+        <Property Id="WSL">2</Property>
+        <Property Id="WINEXPPORT">9182</Property>
+        <CustomAction Id="RunStartScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <CustomAction Id="RunUninstScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
-        <InstallExecuteSequence>
-            <Custom Action="RunStartScript" Before="InstallFinalize">NOT Installed</Custom>
-            <Custom Action="RunUninstScript" After="InstallInitialize">Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+        <InstallExecuteSequence>            
+            <Custom Action="RunStartScript" Before="InstallFinalize">NOT(REMOVE="ALL")</Custom>
+            <Custom Action="RunUninstScript" After="InstallInitialize">Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>            
         </InstallExecuteSequence>
+        <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of Netdata is already installed." />
     </Product>
 </Wix>
