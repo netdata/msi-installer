@@ -137,6 +137,9 @@ Write-Output "WSL DISTRO REGISTERED"
 #saving wsl version used in version file
 $version | Set-Content -Encoding ascii -NoNewLine version.txt
 
+Write-Output "ADJUSTING DISTRO"
+cmd.exe /c wsl -d netdata sh adjust_distro.sh
+
 Write-Output "SAVING WSL VERSION USED IN MACHINE ENV VAR NETDATA_WSL_VERSION"
 cmd.exe /c setx /m NETDATA_WSL_VERSION $version
 

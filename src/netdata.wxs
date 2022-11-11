@@ -7,7 +7,7 @@
     lightArgs: "<projectname>.wixobj" -spdb -out "../<projectname>.msi" <extensions>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" Name="Netdata" Language="1033" Version="0.0.0.1" Manufacturer="Netdata" UpgradeCode="88BEA154-5510-4F79-9282-C3CE10760E2C">    
+    <Product Id="*" Name="Netdata" Language="1033" Version="0.0.0.1" Manufacturer="Netdata" UpgradeCode="88BEA154-5510-4F79-9282-C3CE10760E2C">
         <Package Description="Netdata WSL agent" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="netdata.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
@@ -52,6 +52,15 @@
                     <Component Id="UNREGISTER_NETDATA.CMD" DiskId="1" Guid="DAA43FF4-3D9B-49A4-864E-B84DB9E369AC">
                         <File Id="UNREGISTER_NETDATA.CMD" Name="unregister-netdata.cmd" Source="unregister-netdata.cmd" />
                     </Component>
+                    <Component Id="ADJUST_DISTRO.SH" DiskId="1" Guid="4FF6A3D3-6AC7-4CAE-B5AC-C1CC094C80EC">
+                        <File Id="ADJUST_DISTRO.SH" Name="adjust_distro.sh" Source="adjust_distro.sh" />
+                    </Component>
+                    <Component Id="WSL.CONF" DiskId="1" Guid="482479AE-8CFE-4F22-8736-034D24A18E1B">
+                        <File Id="WSL.CONF" Name="wsl.conf" Source="wsl.conf" />
+                    </Component>
+                    <Component Id="RESOLV.CONF" DiskId="1" Guid="A225D048-C06F-49A0-8773-5CA8D5080FD5">
+                        <File Id="RESOLV.CONF" Name="resolv.conf" Source="resolv.conf" />
+                    </Component>
                 </Directory>
             </Directory>
         </Directory>
@@ -69,6 +78,9 @@
             <ComponentRef Id="UNINSTALL_NETDATA.PS1" />
             <ComponentRef Id="REMOVE_STARTUP.CMD" />
             <ComponentRef Id="UNREGISTER_NETDATA.CMD" />
+            <ComponentRef Id="ADJUST_DISTRO.SH" />
+            <ComponentRef Id="WSL.CONF" />
+            <ComponentRef Id="RESOLV.CONF" />
         </Feature>
         <UI />
         <Property Id="TOKEN">0</Property>
@@ -80,9 +92,9 @@
         <Property Id="WINEXPPORT">9182</Property>
         <CustomAction Id="RunStartScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <CustomAction Id="RunUninstScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
-        <InstallExecuteSequence>            
+        <InstallExecuteSequence>
             <Custom Action="RunStartScript" Before="InstallFinalize">NOT(REMOVE="ALL")</Custom>
-            <Custom Action="RunUninstScript" After="InstallInitialize">Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>            
+            <Custom Action="RunUninstScript" After="InstallInitialize">Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
         </InstallExecuteSequence>
         <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of Netdata is already installed." />
     </Product>
