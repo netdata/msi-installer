@@ -52,6 +52,7 @@ jobs:
     name: Build MSI
     needs:
       - prepare-tarball
+      - get-netdata-version
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -71,7 +72,7 @@ jobs:
         working-directory: src
         shell: cmd
         run: |
-          "C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" -nologo .\netdata.wxs -v -out .\netdata.wixobj
+          "C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" -dProductVersion="${{ needs.get-netdata-version.outputs.versionwix }}" -nologo .\netdata.wxs -v -out .\netdata.wixobj
           "C:\Program Files (x86)\WiX Toolset v3.11\bin\light.exe" .\netdata.wixobj -spdb -v -out .\netdata.msi
           del .\netdata.wixobj
           dir .\
@@ -96,6 +97,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     outputs:
       version: ${{ steps.get-version.outputs.version }}
+      versionwix: ${{ steps.get-version-for-wix.outputs.versionwix }}
     needs:
       - get-docker-tag
     runs-on: ubuntu-latest
@@ -107,6 +109,10 @@ jobs:
         id: get-version
         run: |
           echo "version=$(podman run -it --rm --entrypoint /usr/sbin/netdata netdata/netdata -V 2>/dev/null | cut -f 2 -d ' ')" >> "${GITHUB_OUTPUT}"
+      - name: Get Version for WiX
+        id: get-version-for-wix
+        run: |
+          echo "versionwix=$(podman run -it --rm --entrypoint /usr/sbin/netdata netdata/netdata -V 2>/dev/null | cut -f 2 -d ' ' | cut -f 2 -d 'v' | cut -f 1 -d '-')" >> "${GITHUB_OUTPUT}"
   release:
     name: Create Release
     if: github.event_name == 'workflow_dispatch'
