@@ -38,8 +38,8 @@
   <Actions Context="Author">
     <Exec>
       <Command>powershell.exe</Command>
-      <Arguments>-ExecutionPolicy Bypass -NoProfile &quot; .\netdata.ps1 *&gt;&amp;1 | tee-object -append c:\netdata.log&quot;</Arguments>
-      <WorkingDirectory>c:\program files (x86)\netdata</WorkingDirectory>
+      <Arguments>-ExecutionPolicy Bypass -NoProfile &quot; .\install.ps1 *&gt;&amp;1 | tee-object -append c:\netdata.log&quot;</Arguments>
+      <WorkingDirectory>C:\Netdata</WorkingDirectory>
     </Exec>
   </Actions>
 </Task>

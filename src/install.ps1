@@ -155,15 +155,15 @@ if ($version -eq "1") {
 Write-Output "REMOVING NETDATA FOLDER FROM PATH"
 do {
 	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-	$newpath = $oldpath -replace [regex]::escape(";c:\program files (x86)\netdata")
+	$newpath = $oldpath -replace [regex]::escape(";C:\Netdata")
 	cmd.exe /c setx /m PATH "$newpath"
 	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-} while ($oldpath -like "*;c:\program files (x86)\netdata*");
+} while ($oldpath -like "*;C:\Netdata*");
 
 Write-Output "ADDING SCRIPTS TO PATH"
 $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-if (!($oldpath -like "*c:\program files (x86)\netdata*")) {	
-	cmd.exe /c setx /m PATH "%PATH%;c:\program files (x86)\netdata"
+if (!($oldpath -like "*C:\Netdata*")) {	
+	cmd.exe /c setx /m PATH "%PATH%;C:\Netdata"
 }
 
 if (test-path installed) {

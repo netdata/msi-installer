@@ -10,63 +10,65 @@
     <Product Id="*" Name="Netdata" Language="1033" Version="0.0.0.1" Manufacturer="Netdata" UpgradeCode="88BEA154-5510-4F79-9282-C3CE10760E2C">
         <Package Description="Netdata WSL agent" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="netdata.cab" EmbedCab="yes" />
+        <SetDirectory Id="INSTALLFOLDER" Value="[WindowsVolume]Netdata" />
         <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder" Name="PFiles">
-                <Directory Id="NETDATA" Name="Netdata">
-                    <Component Id="INSTALL_WINDOWS_EXPORTER.CMD" DiskId="1" Guid="F211AC68-CE11-4088-9102-9DF5F39EFC2E">
-                        <File Id="INSTALL_WINDOWS_EXPORTER.CMD" Name="install_windows_exporter.cmd" Source="install_windows_exporter.cmd" />
-                    </Component>
-                    <Component Id="NETDATA.PS1" DiskId="1" Guid="AE0AB842-317C-422D-A112-609C8711B483">
-                        <File Id="NETDATA.PS1" Name="netdata.ps1" Source="netdata.ps1" />
-                    </Component>
-                    <Component Id="NETDATA.TAR" DiskId="1" Guid="CA158CA6-71CD-4526-B89C-9EDB9E559805">
-                        <File Id="NETDATA.TAR" Name="netdata.tar" Source="netdata.tar" />
-                    </Component>
-                    <Component Id="NETDATA_TASK.XML" DiskId="1" Guid="C3869C32-4830-4D25-8600-AA5DCCA5C1F1">
-                        <File Id="NETDATA_TASK.XML" Name="netdata-task.xml" Source="netdata-task.xml" />
-                    </Component>
-                    <Component Id="RESTART_NETDATA.CMD" DiskId="1" Guid="F950AD68-0D2E-4F5F-9E3D-26A033C60698">
-                        <File Id="RESTART_NETDATA.CMD" Name="restart-netdata.cmd" Source="restart-netdata.cmd" />
-                    </Component>
-                    <Component Id="START_NETDATA.CMD" DiskId="1" Guid="E3551668-EB52-4594-B260-D0DA489E6E69">
-                        <File Id="START_NETDATA.CMD" Name="start-netdata.cmd" Source="start-netdata.cmd" />
-                    </Component>
-                    <Component Id="STOP_NETDATA.CMD" DiskId="1" Guid="CE673BA6-A88B-4A83-9C8A-3C804B6DE1FB">
-                        <File Id="STOP_NETDATA.CMD" Name="stop-netdata.cmd" Source="stop-netdata.cmd" />
-                    </Component>
-                    <Component Id="UPDATE_WSL2_KERNEL.CMD" DiskId="1" Guid="EB0A7676-D438-4BEA-B255-439544D38EF9">
-                        <File Id="UPDATE_WSL2_KERNEL.CMD" Name="update_wsl2_kernel.cmd" Source="update_wsl2_kernel.cmd" />
-                    </Component>
-                    <Component Id="WINDOWS_EXPORTER.MSI" DiskId="1" Guid="2A5F1468-792B-464C-883D-632B73E44E65">
-                        <File Id="WINDOWS_EXPORTER.MSI" Name="windows_exporter.msi" Source="windows_exporter.msi" />
-                    </Component>
-                    <Component Id="WSL_UPDATE_X64.MSI" DiskId="1" Guid="10FCA6F3-D847-477A-8C8E-2A5A087BA17F">
-                        <File Id="WSL_UPDATE_X64.MSI" Name="wsl_update_x64.msi" Source="wsl_update_x64.msi" />
-                    </Component>
-                    <Component Id="UNINSTALL_NETDATA.PS1" DiskId="1" Guid="0D955728-0DBF-4330-9EE7-E604BFA7DE20">
-                        <File Id="UNINSTALL_NETDATA.PS1" Name="uninstall-netdata.ps1" Source="uninstall-netdata.ps1" />
-                    </Component>
-                    <Component Id="REMOVE_STARTUP.CMD" DiskId="1" Guid="717F56D2-45AA-491C-A479-9998D9D0D7EC">
-                        <File Id="REMOVE_STARTUP.CMD" Name="remove-startup.cmd" Source="remove-startup.cmd" />
-                    </Component>
-                    <Component Id="UNREGISTER_NETDATA.CMD" DiskId="1" Guid="DAA43FF4-3D9B-49A4-864E-B84DB9E369AC">
-                        <File Id="UNREGISTER_NETDATA.CMD" Name="unregister-netdata.cmd" Source="unregister-netdata.cmd" />
-                    </Component>
-                    <Component Id="ADJUST_DISTRO.SH" DiskId="1" Guid="4FF6A3D3-6AC7-4CAE-B5AC-C1CC094C80EC">
-                        <File Id="ADJUST_DISTRO.SH" Name="adjust_distro.sh" Source="adjust_distro.sh" />
-                    </Component>
-                    <Component Id="WSL.CONF" DiskId="1" Guid="482479AE-8CFE-4F22-8736-034D24A18E1B">
-                        <File Id="WSL.CONF" Name="wsl.conf" Source="wsl.conf" />
-                    </Component>
-                    <Component Id="RESOLV.CONF" DiskId="1" Guid="A225D048-C06F-49A0-8773-5CA8D5080FD5">
-                        <File Id="RESOLV.CONF" Name="resolv.conf" Source="resolv.conf" />
-                    </Component>
-                </Directory>
+            <Directory Id="INSTALLFOLDER" Name="Netdata">
+                <Component Id="INSTALL_WINDOWS_EXPORTER.CMD" DiskId="1" Guid="F211AC68-CE11-4088-9102-9DF5F39EFC2E">
+                    <File Id="INSTALL_WINDOWS_EXPORTER.CMD" Name="install_windows_exporter.cmd" Source="install_windows_exporter.cmd" />
+                </Component>
+                <Component Id="INSTALL.PS1" DiskId="1" Guid="AE0AB842-317C-422D-A112-609C8711B483">
+                    <File Id="INSTALL.PS1" Name="install.ps1" Source="install.ps1" />
+                </Component>
+                <Component Id="NETDATA.TAR" DiskId="1" Guid="CA158CA6-71CD-4526-B89C-9EDB9E559805">
+                    <File Id="NETDATA.TAR" Name="netdata.tar" Source="netdata.tar" />
+                </Component>
+                <Component Id="NETDATA_TASK.XML" DiskId="1" Guid="C3869C32-4830-4D25-8600-AA5DCCA5C1F1">
+                    <File Id="NETDATA_TASK.XML" Name="netdata-task.xml" Source="netdata-task.xml" />
+                </Component>
+                <Component Id="RESTART_NETDATA.CMD" DiskId="1" Guid="F950AD68-0D2E-4F5F-9E3D-26A033C60698">
+                    <File Id="RESTART_NETDATA.CMD" Name="restart-netdata.cmd" Source="restart-netdata.cmd" />
+                </Component>
+                <Component Id="START_NETDATA.CMD" DiskId="1" Guid="E3551668-EB52-4594-B260-D0DA489E6E69">
+                    <File Id="START_NETDATA.CMD" Name="start-netdata.cmd" Source="start-netdata.cmd" />
+                </Component>
+                <Component Id="STOP_NETDATA.CMD" DiskId="1" Guid="CE673BA6-A88B-4A83-9C8A-3C804B6DE1FB">
+                    <File Id="STOP_NETDATA.CMD" Name="stop-netdata.cmd" Source="stop-netdata.cmd" />
+                </Component>
+                <Component Id="UPDATE_WSL2_KERNEL.CMD" DiskId="1" Guid="EB0A7676-D438-4BEA-B255-439544D38EF9">
+                    <File Id="UPDATE_WSL2_KERNEL.CMD" Name="update_wsl2_kernel.cmd" Source="update_wsl2_kernel.cmd" />
+                </Component>
+                <Component Id="WINDOWS_EXPORTER.MSI" DiskId="1" Guid="2A5F1468-792B-464C-883D-632B73E44E65">
+                    <File Id="WINDOWS_EXPORTER.MSI" Name="windows_exporter.msi" Source="windows_exporter.msi" />
+                </Component>
+                <Component Id="WSL_UPDATE_X64.MSI" DiskId="1" Guid="10FCA6F3-D847-477A-8C8E-2A5A087BA17F">
+                    <File Id="WSL_UPDATE_X64.MSI" Name="wsl_update_x64.msi" Source="wsl_update_x64.msi" />
+                </Component>
+                <Component Id="UNINSTALL_NETDATA.PS1" DiskId="1" Guid="0D955728-0DBF-4330-9EE7-E604BFA7DE20">
+                    <File Id="UNINSTALL_NETDATA.PS1" Name="uninstall-netdata.ps1" Source="uninstall-netdata.ps1" />
+                </Component>
+                <Component Id="REMOVE_STARTUP.CMD" DiskId="1" Guid="717F56D2-45AA-491C-A479-9998D9D0D7EC">
+                    <File Id="REMOVE_STARTUP.CMD" Name="remove-startup.cmd" Source="remove-startup.cmd" />
+                </Component>
+                <Component Id="UNREGISTER_NETDATA.CMD" DiskId="1" Guid="DAA43FF4-3D9B-49A4-864E-B84DB9E369AC">
+                    <File Id="UNREGISTER_NETDATA.CMD" Name="unregister-netdata.cmd" Source="unregister-netdata.cmd" />
+                </Component>
+                <Component Id="ADJUST_DISTRO.SH" DiskId="1" Guid="4FF6A3D3-6AC7-4CAE-B5AC-C1CC094C80EC">
+                    <File Id="ADJUST_DISTRO.SH" Name="adjust_distro.sh" Source="adjust_distro.sh" />
+                </Component>
+                <Component Id="WSL.CONF" DiskId="1" Guid="482479AE-8CFE-4F22-8736-034D24A18E1B">
+                    <File Id="WSL.CONF" Name="wsl.conf" Source="wsl.conf" />
+                </Component>
+                <Component Id="RESOLV.CONF" DiskId="1" Guid="A225D048-C06F-49A0-8773-5CA8D5080FD5">
+                    <File Id="RESOLV.CONF" Name="resolv.conf" Source="resolv.conf" />
+                </Component>
+                <Component Id="NETDATA.CONF" DiskId="1" Guid="D3AAAC8C-F636-47AC-8D45-9AE9344C65E1">
+                    <File Id="NETDATA.CONF" Name="netdata.conf" Source="netdata.conf" />
+                </Component>
             </Directory>
         </Directory>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
             <ComponentRef Id="INSTALL_WINDOWS_EXPORTER.CMD" />
-            <ComponentRef Id="NETDATA.PS1" />
+            <ComponentRef Id="INSTALL.PS1" />
             <ComponentRef Id="NETDATA.TAR" />
             <ComponentRef Id="NETDATA_TASK.XML" />
             <ComponentRef Id="RESTART_NETDATA.CMD" />
@@ -81,6 +83,7 @@
             <ComponentRef Id="ADJUST_DISTRO.SH" />
             <ComponentRef Id="WSL.CONF" />
             <ComponentRef Id="RESOLV.CONF" />
+            <ComponentRef Id="NETDATA.CONF" />
         </Feature>
         <UI />
         <Property Id="TOKEN">0</Property>
@@ -90,8 +93,8 @@
         <Property Id="AUTORESTART">1</Property>
         <Property Id="WSL">2</Property>
         <Property Id="WINEXPPORT">9182</Property>
-        <CustomAction Id="RunStartScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
-        <CustomAction Id="RunUninstScript" Directory="NETDATA" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
+        <CustomAction Id="RunStartScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\install.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
+        <CustomAction Id="RunUninstScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <InstallExecuteSequence>
             <Custom Action="RunStartScript" Before="InstallFinalize">NOT(REMOVE="ALL")</Custom>
             <Custom Action="RunUninstScript" After="InstallInitialize">Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
