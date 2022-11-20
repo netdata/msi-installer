@@ -90,9 +90,13 @@
         <Property Id="ROOMS">0</Property>
         <Property Id="URL">https://app.netdata.cloud</Property>
         <Property Id="TELEMETRY">1</Property>
-        <Property Id="AUTORESTART">1</Property>
+        <Property Id="AUTORESTART">0</Property>
         <Property Id="WSL">2</Property>
         <Property Id="WINEXPPORT">9182</Property>
+        <Property Id="MSIUSEREALADMINDETECTION" Value="1" />     
+        <Condition Message='Installation requires Administrator privileges, please run "msiexec.exe /i netdata.msi" from an admin prompt'>
+            <![CDATA[Privileged]]>
+        </Condition>
         <CustomAction Id="RunStartScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\install.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <CustomAction Id="RunUninstScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <InstallExecuteSequence>

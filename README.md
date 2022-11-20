@@ -13,8 +13,7 @@ On your Windows machine:
 
 > :warning: **Running directly the MSI will cause installation to fail**. Only install via `msiexec`.
 
-> :warning: **The installer will reboot the server without asking you** in order to install all the dependencies. After restart, the installation will finish 
-automatically, but **a user needs to log in, after the reboot**, due to https://github.com/microsoft/WSL/issues/2979.
+> :warning: **The installer will need to reboot the server** in order to finish the installation, but **a user needs to log in, after the reboot**, due to https://github.com/microsoft/WSL/issues/2979.
 
 
 ## Installation Details
@@ -22,9 +21,10 @@ automatically, but **a user needs to log in, after the reboot**, due to https://
 The MSI installer includes and installs automatically the following dependencies:
 - [Prometheus exporter for Windows](https://github.com/prometheus-community/windows_exporter/releases).
 - [WSL2 Linux kernel update package for x64 machines](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
-  If WSL2 can't be used, WSL1 will be used instead. 
 
-The MSI file is self-contained. Run it to unattendedly setup the Netdata agent. 
+If WSL2 can't be used, WSL1 will be used instead. 
+
+The MSI file is self-contained. Run it to setup the Netdata agent. 
 
 The installer will register the WSL distribution called "Netdata", start the agent and add a startup item for the current user.
 
@@ -38,9 +38,9 @@ To disable telemetry add the binary argument TELEMETRY=0:
 
 The installation log can be found at `C:\NETDATA.LOG`
 
-To disable the automatic restart, use binary argument AUTORESTART=0:
+To enable an automatic restart, use binary argument AUTORESTART=1:
 
-```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi AUTORESTART=0```
+```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi AUTORESTART=1```
 
 To specify the WSL version to be used use integer argument WSL=1:
 
