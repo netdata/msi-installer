@@ -94,8 +94,8 @@ if (-Not (test-path installed)) {
 }
 
 if (test-path installed) {
-	Write-Output "BACKING UP CONFIGURATION"
-	cmd.exe /c wsl -d netdata cp -a /etc/netdata/. /mnt/c/netdata/cfgbackuptmp	
+	Write-Output "BACKING UP CONFIGURATION"	
+	cmd.exe /c wsl -d netdata tar zcvf /mnt/c/netdata/netdatacfg.tar /etc/netdata /var/lib/netdata /var/cache/netdata 2>&1 | %{ "$_" }
 }
 
 Write-Output "UNREGISTERING NETDATA WSL DISTRO"
@@ -155,21 +155,25 @@ if ($version -eq "1") {
 Write-Output "REMOVING NETDATA FOLDER FROM PATH"
 do {
 	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+	Write-Output "PREVIOUS PATH:"
+	$oldpath
 	$newpath = $oldpath -replace [regex]::escape(";C:\Netdata")
 	cmd.exe /c setx /m PATH "$newpath"
 	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
 } while ($oldpath -like "*;C:\Netdata*");
-
 Write-Output "ADDING SCRIPTS TO PATH"
 $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
 if (!($oldpath -like "*C:\Netdata*")) {	
-	cmd.exe /c setx /m PATH "%PATH%;C:\Netdata"
+	cmd.exe /c setx /m PATH "%PATH%;C:\Netdata" | Out-Null
 }
+$currentpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+Write-Output "CURRENT PATH:"
+$currentpath
 
 if (test-path installed) {
 	Write-Output "RESTORING CONFIGURATION"
-	wsl -d netdata cp -a /mnt/c/netdata/cfgbackuptmp/. /etc/netdata/
-	wsl -d netdata rm -rf /mnt/c/netdata/cfgbackuptmp
+	wsl -d netdata tar zxvf /mnt/c/netdata/netdatacfg.tar -C /
+	wsl -d netdata rm -f /mnt/c/netdata/netdatacfg.tar
 }
 
 # Handle claim and telemetry arguments
@@ -190,7 +194,7 @@ if ($telemetry -eq "0") {
 }
 
 Write-Output "STARTING AGENT"
-cmd.exe /c wsl -d netdata netdata
+cmd.exe /c wsl -d netdata netdata 2>&1 | %{ "$_" }
 
 if (-Not (test-path installed)) {
 	Write-Output "ADDING NETDATA TO STARTUP"

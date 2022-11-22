@@ -41,10 +41,15 @@ REG delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /
 Write-Output "REMOVING NETDATA FOLDER FROM PATH"
 do {
 	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+	Write-Output "PREVIOUS PATH:"
+	$oldpath
 	$newpath = $oldpath -replace [regex]::escape(";C:\Netdata")
 	cmd.exe /c setx /m PATH "$newpath"
 	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
 } while ($oldpath -like "*;C:\Netdata*");
+$currentpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+Write-Output "CURRENT PATH:"
+$currentpath
 
 Write-Output "REMOVING INSTALLED FLAG"
 Remove-Item installed
