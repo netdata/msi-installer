@@ -13,7 +13,7 @@ On your Windows machine:
 
 > :warning: **Running directly the MSI will cause installation to fail**. Only install via `msiexec`.
 
-> :warning: *You will need to reboot your server** in order to finish the installation and **a user needs to log in, after the reboot**, due to https://github.com/microsoft/WSL/issues/2979.
+> :warning: **You will need to reboot your server** in order to finish the installation and **a user needs to log in, after the reboot**, due to https://github.com/microsoft/WSL/issues/2979.
 
 
 ## Installation Details
