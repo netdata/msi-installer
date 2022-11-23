@@ -2,7 +2,7 @@
 
 Netdata installer for Windows using WSL. Use this installer to quickly explore how Netdata monitors Windows hosts. 
 
-For production use, you will need to [set up remote data collection](https://learn.netdata.cloud/docs/agent/collectors/go.d.plugin/modules/wmi#remote-data-collection). 
+For production use, you will need to [install Netdata on a Linux host]([https://learn.netdata.cloud/docs/agent/collectors/go.d.plugin/modules/wmi#remote-data-collection](https://learn.netdata.cloud/docs/agent/collectors/go.d.plugin/modules/wmi#requirements)). 
 
 ## Instructions
 
