@@ -13,9 +13,9 @@ on:
         default: latest
         required: true
       pwd:
-      description: Certificate password
-      default: pwd
-      required: true
+        description: Certificate password
+        default: pwd
+        required: true
 concurrency:
   group: build-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
