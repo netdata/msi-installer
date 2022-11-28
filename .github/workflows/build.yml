@@ -78,11 +78,11 @@ jobs:
         env:
           P12BASE64: ${{ secrets.NETDATA_CLOUD_KEY_P12_BASE64 }}
         run: |
-          "C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" -dProductVersion="${{ needs.get-netdata-version.outputs.versionwix }}" -nologo .\netdata.wxs -v -out .\netdata.wixobj
-          "C:\Program Files (x86)\WiX Toolset v3.11\bin\light.exe" .\netdata.wixobj -spdb -v -out .\netdata.msi
+          "C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" "-dProductVersion=${{ needs.get-netdata-version.outputs.versionwix }} -nologo .\netdata.wxs -v -out .\netdata.wixobj"
+          "C:\Program Files (x86)\WiX Toolset v3.11\bin\light.exe" ".\netdata.wixobj -spdb -v -out .\netdata.msi"
           del .\netdata.wixobj
           [System.IO.File]::WriteAllBytes('netdata.cloud.key.p12', [System.Convert]::FromBase64String($Env:P12BASE64))
-          signtool.exe sign /f netdata.cloud.key.p12 /p ${{ github.event.inputs.pwd }} ..\netdata.msi
+          signtool.exe "sign /f netdata.cloud.key.p12 /p ${{ github.event.inputs.pwd }} ..\netdata.msi"
           remove-item netdata.cloud.key.p12
           dir .\
       - name: Upload MSI
