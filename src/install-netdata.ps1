@@ -152,24 +152,6 @@ if ($version -eq "1") {
 	New-NetFirewallRule -Program C:\Netdata\rootfs\usr\sbin\netdata -Action Allow -Profile Domain,Private,Public -DisplayName netdata -Description netdata -Direction Inbound	
 }
 
-Write-Output "REMOVING NETDATA FOLDER FROM PATH"
-do {
-	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-	Write-Output "PREVIOUS PATH:"
-	$oldpath
-	$newpath = $oldpath -replace [regex]::escape(";C:\Netdata")
-	cmd.exe /c setx /m PATH "$newpath" > nul
-	$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-} while ($oldpath -like "*;C:\Netdata*");
-Write-Output "ADDING SCRIPTS TO PATH"
-$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-if (!($oldpath -like "*C:\Netdata*")) {	
-	cmd.exe /c setx /m PATH "%PATH%;C:\Netdata" > nul
-}
-$currentpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-Write-Output "CURRENT PATH:"
-$currentpath
-
 if (test-path installed) {
 	Write-Output "RESTORING CONFIGURATION"
 	wsl -d netdata tar zxvf /mnt/c/netdata/netdatacfg.tar -C /

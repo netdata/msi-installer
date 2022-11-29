@@ -12,6 +12,9 @@
         <Media Id="1" Cabinet="netdata.cab" EmbedCab="yes" />
         <SetDirectory Id="INSTALLFOLDER" Value="[WindowsVolume]Netdata" />
         <Directory Id="TARGETDIR" Name="SourceDir">
+            <Component Id="Path" Guid="588c357b-ab0e-4ded-8b82-3d77dc323b72">
+                <Environment Id="PATH" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="no" />
+            </Component>
             <Directory Id="INSTALLFOLDER" Name="Netdata">
                 <Component Id="INSTALL_WINDOWS_EXPORTER.CMD" DiskId="1" Guid="F211AC68-CE11-4088-9102-9DF5F39EFC2E">
                     <File Id="INSTALL_WINDOWS_EXPORTER.CMD" Name="install_windows_exporter.cmd" Source="install_windows_exporter.cmd" />
@@ -84,6 +87,7 @@
             <ComponentRef Id="WSL.CONF" />
             <ComponentRef Id="RESOLV.CONF" />
             <ComponentRef Id="NETDATA.CONF" />
+            <ComponentRef Id="Path" />
         </Feature>
         <UI />
         <Property Id="TOKEN">0</Property>
@@ -93,10 +97,8 @@
         <Property Id="AUTORESTART">0</Property>
         <Property Id="WSL">2</Property>
         <Property Id="WINEXPPORT">9182</Property>
-        <Property Id="MSIUSEREALADMINDETECTION" Value="1" />     
-        <Condition Message='Installation requires Administrator privileges, please run "msiexec.exe /i netdata.msi" from an admin prompt'>
-            <![CDATA[Privileged]]>
-        </Condition>
+        <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
+        <Condition Message="Installation requires Administrator privileges, please run &quot;msiexec.exe /i netdata.msi&quot; from an admin prompt"><![CDATA[Privileged]]></Condition>
         <CustomAction Id="RunStartScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\install-netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <CustomAction Id="RunUninstScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <InstallExecuteSequence>
