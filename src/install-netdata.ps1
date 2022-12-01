@@ -88,7 +88,7 @@ if (-Not (test-path installed)) {
 	Write-Output "INSTALLING WSL2 KERNEL UPDATE"
 	cmd.exe /c update_wsl2_kernel.cmd
 
-	Write-Output "INSTALLING WINDOWS_EXPORTER.MSI"
+	Write-Output "INSTALLING WINDOWS_EXPORTER"
 	
 	cmd.exe /c "install_windows_exporter.cmd $winexpport"
 }
