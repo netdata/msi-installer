@@ -168,7 +168,7 @@ if ($token -ne "0") {
 	if ($rooms -eq "0") {
 		cmd.exe /c "wsl -d netdata netdata-claim.sh -token=$token -url=$url"
 	} else {
-		cmd.exe /c "wsl -d netdata netdata-claim.sh -token=$token -rooms=$rooms -url=$url"
+		wsl -d netdata netdata-claim.sh -token=$token -rooms="$rooms" -url=$url
 	}
 }
 if ($telemetry -eq "0") {
