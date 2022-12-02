@@ -9,7 +9,7 @@ For production use, you will need to [install Netdata on a Linux host]([https://
 On your Windows machine:
 
 - Download the [latest netdata.msi](https://github.com/netdata/msi-installer/releases)
-- Open an **admin** terminal and run `msiexec -i [PATH TO MSI]\netdata.msi [OPTIONS]` 
+- Open an **admin** CMD terminal (not Powershell) and run `msiexec -i [PATH TO MSI]\netdata.msi [OPTIONS]` 
 
 > :warning: **Running directly the MSI will cause installation to fail**. Only install via `msiexec`.
 
@@ -30,7 +30,7 @@ The installer will register the WSL distribution called "Netdata", start the age
 
 The agent can be added to Netdata Cloud by copy/pasting the add node command from your space. e.g.:
 
-```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi TOKEN=*token* ROOMS=*room list* URL=https://app.netdata.cloud```
+```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi TOKEN=*token* ROOMS="*room list*" URL=https://app.netdata.cloud```
 
 To disable telemetry add the binary argument TELEMETRY=0:
 
