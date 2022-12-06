@@ -166,9 +166,9 @@ if (test-path installed) {
 if ($token -ne "0") {
 	Write-Output "CLAIMING"
 	if ($rooms -eq "0") {
-		cmd.exe /c "wsl -d netdata netdata-claim.sh -token=$token -url=$url"
+		cmd.exe /c wsl -d netdata netdata-claim.sh -token=$token -url=$url 2>&1 | %{ "$_" }
 	} else {
-		wsl -d netdata netdata-claim.sh -token=$token -rooms="$rooms" -url=$url
+		cmd.exe /c wsl -d netdata netdata-claim.sh -token=$token -rooms="$rooms" -url=$url 2>&1 | %{ "$_" }
 	}
 }
 if ($telemetry -eq "0") {
