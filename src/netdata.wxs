@@ -99,7 +99,7 @@
         <Property Id="WINEXPPORT">9182</Property>
         <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
         <Condition Message="Installation requires Administrator privileges, please run &quot;msiexec.exe /i netdata.msi&quot; from an admin prompt"><![CDATA[Privileged]]></Condition>
-        <CustomAction Id="RunStartScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\install-netdata.ps1 [TOKEN] [ROOMS] [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
+        <CustomAction Id="RunStartScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\install-netdata.ps1 [TOKEN] '[ROOMS]' [URL] [TELEMETRY] [AUTORESTART] [WSL] [WINEXPPORT] *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <CustomAction Id="RunUninstScript" Directory="INSTALLFOLDER" ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile &quot; .\uninstall-netdata.ps1 *&gt;&amp;1 | tee-object c:\netdata.log&quot;" Execute="deferred" Return="ignore" Impersonate="no" />
         <InstallExecuteSequence>
             <Custom Action="RunStartScript" Before="InstallFinalize">NOT(REMOVE="ALL")</Custom>
