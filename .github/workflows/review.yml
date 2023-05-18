@@ -27,34 +27,34 @@ jobs:
         id: actionlint
         run: |
           if [ "${{ contains(github.event.pull_request.labels.*.name, 'run-ci/actionlint') }}" = "true" ]; then
-            echo '::set-output name=run::true'
+            echo "run=true" >> $GITHUB_OUTPUT
           elif git diff --name-only origin/${{ github.base_ref }} HEAD | grep -Eq '\.github/workflows/.*' ; then
-            echo '::set-output name=run::true'
+            echo "run=true" >> $GITHUB_OUTPUT
             echo 'GitHub Actions workflows have changed, need to run actionlint.'
           else
-            echo '::set-output name=run::false'
+            echo "run=false" >> $GITHUB_OUTPUT
           fi
       - name: Check files for shellcheck
         id: shellcheck
         run: |
           if [ "${{ contains(github.event.pull_request.labels.*.name, 'run-ci/shellcheck') }}" = "true" ]; then
-            echo '::set-output name=run::true'
+            echo "run=true" >> $GITHUB_OUTPUT
           elif git diff --name-only origin/${{ github.base_ref }} HEAD | grep -Eq '.*\.sh.*' ; then
-            echo '::set-output name=run::true'
+            echo "run=true" >> $GITHUB_OUTPUT
             echo 'Shell scripts have changed, need to run shellcheck.'
           else
-            echo '::set-output name=run::false'
+            echo "run=false" >> $GITHUB_OUTPUT
           fi
       - name: Check files for yamllint
         id: yamllint
         run: |
           if [ "${{ contains(github.event.pull_request.labels.*.name, 'run-ci/yamllint') }}" = "true" ]; then
-            echo '::set-output name=run::true'
+            echo "run=true" >> $GITHUB_OUTPUT
           elif git diff --name-only origin/${{ github.base_ref }} HEAD | grep -Eq '.*\.ya?ml|python\.d/.*\.conf' ; then
-            echo '::set-output name=run::true'
+            echo "run=true" >> $GITHUB_OUTPUT
             echo 'YAML files have changed, need to run yamllint.'
           else
-            echo '::set-output name=run::false'
+            echo "run=false" >> $GITHUB_OUTPUT
           fi
 
   actionlint:
