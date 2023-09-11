@@ -42,7 +42,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Generate Tarball
         id: generate
         run: sh src/docker_image_to_wsl_tar.sh "${{ needs.get-docker-tag.outputs.tag }}"
@@ -61,7 +61,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Prepare Tools
         id: prepare
         run: choco install wixtoolset
@@ -131,7 +131,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fetch MSI
         id: fetch
         uses: actions/download-artifact@v3
