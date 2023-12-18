@@ -48,7 +48,7 @@ jobs:
         run: sh src/docker_image_to_wsl_tar.sh "${{ needs.get-docker-tag.outputs.tag }}"
       - name: Store Tarball
         id: store
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: netdata-tarball
           path: netdata.tar
@@ -85,7 +85,7 @@ jobs:
           dir .\
       - name: Upload MSI
         id: upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: netdata-msi
           path: src/netdata.msi
