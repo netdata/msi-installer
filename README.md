@@ -1,3 +1,11 @@
+# :warning: _This installation method is no longer supported_ :warning:
+
+It has always had some serious issues that mean it’s not production quality, not to mention the issues inherent in trying to use WSL for production workloads. The currently preferred method for monitoring Windows hosts is to install the agent on a properly supported platform and monitor the Windows host remotely via the Windows Exporter collector as outlined at https://learn.netdata.cloud/docs/collecting-metrics/windows-systems/windows
+
+_**ALL**_ support requests regarding this installer will be directed to that same documentation and closed.
+
+We are currently working on a (mostly) native Windows version of the Netdata Agent that will be far superior in essentially every way which is expected to be released before the end of 2024. Once that release happens, this repository will be archived.
+
 # Netdata MSI Installer
 
 Netdata installer for Windows using WSL. Use this installer to quickly explore how Netdata monitors Windows hosts. 
