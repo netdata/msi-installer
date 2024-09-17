@@ -36,7 +36,7 @@ The installer will register the WSL distribution called "Netdata", start the age
 
 The agent can be added to Netdata Cloud by running the following as an administrator:
 
-```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi TOKEN=[Claim token] ROOMS=[Room IDs] URL=https://app.netdata.cloud```
+```msiexec.exe /i C:\PATH-TO-MSI\netdata.msi TOKEN=[Claim token] ROOMS=[Room IDs] URL=https://api.netdata.cloud```
 
 You take the values of [token] and [rooms] from Netdata Cloud. e.g.
 
