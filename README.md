@@ -6,6 +6,10 @@ When installed on Windows systems Netdata will monitor System Resources, Storage
 
 ## Netdata MSI Installer
 
-You can download the Netdata MSI installer (nightly or stable version) from this URL:
+You can download the latest Netdata MSI installer (nightly or stable version) from this URL:
 
 https://learn.netdata.cloud/docs/netdata-agent/installation/windows
+
+---
+
+<small>This repository remains available for historical reasons. Netdata supports natively Windows, and all related code is at the [Netdata main repository](https://github.com/netdata/netdata).</small>
